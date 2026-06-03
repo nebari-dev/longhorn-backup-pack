@@ -10,8 +10,8 @@ const config = {
   tagline: 'Persistent volume backups on Nebari',
   favicon: 'img/favicon.ico',
 
-  url: 'https://nebari-longhorn-backup-pack.netlify.app',
-  baseUrl: '/',
+  url: 'https://nebari-dev.github.io',
+  baseUrl: '/nebari-longhorn-backup-pack/',
 
   organizationName: 'nebari-dev',
   projectName: 'nebari-longhorn-backup-pack',
