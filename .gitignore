@@ -10,3 +10,13 @@ gh-pages/
 *.swp
 *.swo
 .DS_Store
+
+# Docs (Docusaurus)
+docs/node_modules/
+docs/build/
+docs/.docusaurus/
+docs/.cache-loader/
+
+# Local agent / contributor playbook (not for the public repo)
+AGENT.md
+AGENTS.md
