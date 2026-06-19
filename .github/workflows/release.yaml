@@ -11,17 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v4
         with:
           fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
         run: curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -43,10 +37,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Update Helm dependencies
+        if: steps.check.outputs.exists == 'false'
+        run: helm dependency update .
+
       - name: Package chart
         if: steps.check.outputs.exists == 'false'
         run: helm package .
 
+      # Publishing a GitHub release fires the `release: published` event, which
+      # the "Sync Helm Chart" workflow consumes to open a PR against
+      # nebari-dev/helm-repository. That repository packages, indexes (with
+      # `helm repo index --merge`, preserving every prior version), and
+      # publishes the chart. This repo therefore no longer maintains its own
+      # gh-pages Helm index — which is what previously collapsed the index to a
+      # single version on every release.
       - name: Create GitHub release
         if: steps.check.outputs.exists == 'false'
         run: |
@@ -56,19 +61,3 @@ jobs:
             *.tgz
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update Helm repo index
-        if: steps.check.outputs.exists == 'false'
-        run: |
-          mkdir -p gh-pages
-          cp *.tgz gh-pages/
-          cd gh-pages
-          git init
-          git checkout -b gh-pages
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          helm repo index . --url https://github.com/${{ github.repository }}/releases/download/${{ steps.chart.outputs.name }}-${{ steps.chart.outputs.version }}
-          git add .
-          git commit -m "Release ${{ steps.chart.outputs.name }}-${{ steps.chart.outputs.version }}"
-          git push origin gh-pages --force
