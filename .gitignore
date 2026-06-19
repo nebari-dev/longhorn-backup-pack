@@ -17,6 +17,9 @@ docs/build/
 docs/.docusaurus/
 docs/.cache-loader/
 
+# npm
+docs/.npm/
+
 # Local agent / contributor playbook (not for the public repo)
 AGENT.md
 AGENTS.md
