@@ -51,12 +51,9 @@ This pack only schedules backups — restore is a Longhorn operation. The steps 
 
 ### Open the Longhorn UI
 
-The UI is ClusterIP-only by default. Port-forward in a separate terminal:
+The UI is exposed through the Nebari gateway at `https://longhorn.<your-domain>/` and protected by Keycloak OIDC.
 
-```bash
-kubectl -n longhorn-system port-forward svc/longhorn-frontend 8080:80
-# → http://localhost:8080
-```
+Access is restricted to members of the `longhorn-admins` group in the `nebari` Keycloak realm — everyone else is denied. Add your user to that group (the seeded `admin` user is already a member), then sign in through Keycloak to reach the Longhorn dashboard.
 
 ### Restoring an RWO volume
 
