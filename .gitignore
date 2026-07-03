@@ -11,14 +11,18 @@ gh-pages/
 *.swo
 .DS_Store
 
-# Docs (Docusaurus)
+# Docs (Astro)
 docs/node_modules/
-docs/build/
-docs/.docusaurus/
-docs/.cache-loader/
+docs/dist/
+docs/.astro/
+*dist/
 
 # npm
 docs/.npm/
+npm-debug.log*
+
+# Astro env
+.env.production
 
 # Local agent / contributor playbook (not for the public repo)
 AGENT.md

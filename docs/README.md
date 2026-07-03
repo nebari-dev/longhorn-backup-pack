@@ -1,28 +1,25 @@
 # Nebari Longhorn Backup Pack Documentation
 
-This directory contains the [Docusaurus](https://docusaurus.io/) site for the Nebari Longhorn Backup Pack. The site is written in TypeScript.
+This directory contains the [Astro](https://astro.build) + [Starlight](https://starlight.astro.build) site for the Nebari Longhorn Backup Pack.
 
 ## Prerequisites
 
-- Node.js `>= 20` (enforced by the `engines` field in `package.json`).
-- npm (bundled with Node.js).
+- Node.js `>= 22` (enforced by the `engines` field in `package.json`)
+- npm (bundled with Node.js)
 
 ## Install
 
 ```bash
-cd docs
-npm install
+npm ci
 ```
 
 ## Local development
 
 ```bash
-npm start
+npm run dev
 ```
 
-Starts the Docusaurus dev server with hot reload on http://localhost:3000/.
-
-Note: the lunr search index is generated only by `npm run build`. The search box in the dev server will return no results; use a production build to exercise search.
+Starts the Astro dev server with hot reload on http://localhost:4321/.
 
 ## Production build
 
@@ -30,24 +27,32 @@ Note: the lunr search index is generated only by `npm run build`. The search box
 npm run build
 ```
 
-Emits static files to `docs/build/`. The build step also produces the lunr search index via `docusaurus-lunr-search`.
+Emits static files to `docs/dist/`.
 
 ## Preview the production build
 
 ```bash
-npm run serve
+npm run preview
 ```
 
-Serves the contents of `docs/build/` locally so you can verify the production output, including search.
-
-## Type checking
+## Unit tests
 
 ```bash
-npm run typecheck
+npm test
 ```
+
+## Link checking
+
+```bash
+make docs-check-links
+```
+
+To test with the production base path: `BASE=/longhorn-backup-pack/ make docs-check-links`
+
+## Content
+
+Pages live in `src/content/docs/`. Each `.md` or `.mdx` file becomes a page. The sidebar is configured in `astro.config.mjs` under `starlight.sidebar`.
 
 ## CI
 
-The [`Deploy docs to GitHub Pages` workflow](../.github/workflows/deploy-docs.yml) builds the site for every pull request and push to `main`, and deploys to GitHub Pages on merge to `main`.
-
-To enable GitHub Pages for this repository, go to **Settings → Pages** and set the source to **GitHub Actions**.
+The [`docs` workflow](../.github/workflows/docs.yml) builds the site and deploys to [Cloudflare Pages](https://pages.cloudflare.com) on every push to `main`. Pull requests get a preview URL posted as a comment.
