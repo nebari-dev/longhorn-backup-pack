@@ -21,7 +21,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Nebari Longhorn Backup Pack',
-      description: 'Longhorn-native snapshot and backup schedules for persistent volumes on a Nebari cluster.',
+      description: "Hourly Longhorn snapshots and daily S3 backups for every volume on the cluster's default StorageClass.",
       // Shared Nebari identity (brand colors, fonts, logo, favicon, footer, and
       // GitHub social link) comes from the @nebari/starlight theme plugin. On the
       // portal the header logo returns users to the pack catalog.

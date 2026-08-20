@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: Documentation for the Nebari Longhorn Backup Pack - Longhorn-native snapshot and backup schedules for persistent volumes on a Nebari cluster.
+description: "Hourly Longhorn snapshots and daily S3 backups for every volume on the cluster's default StorageClass."
 ---
 
 The Nebari Longhorn Backup Pack schedules Longhorn-native snapshots and backups
