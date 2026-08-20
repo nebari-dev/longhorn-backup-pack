@@ -1,49 +1,63 @@
 # Nebari Longhorn Backup Pack Documentation
 
-This directory contains the [Docusaurus 3.5.2](https://docusaurus.io/) site for the Nebari Longhorn Backup pack.
+This directory contains the [Astro](https://astro.build) + [Starlight](https://starlight.astro.build) site for the Nebari Longhorn Backup Pack.
 
 ## Prerequisites
 
-- Node.js `>= 18` (enforced by the `engines` field in `package.json`).
-- Yarn (Classic, v1.22.x). Install globally with `npm install -g yarn`, then verify with `yarn --version`.
-
-The site is built and tested against Node 20 and Yarn 1.22.22.
+- Node.js `>= 22` (enforced by the `engines` field in `package.json`)
+- npm (bundled with Node.js)
 
 ## Install
 
 ```bash
 cd docs
-yarn install
+npm ci
 ```
 
 ## Local development
 
 ```bash
-yarn start
+npm run dev
 ```
 
-Starts the Docusaurus dev server with hot reload on http://localhost:3000/.
-
-Note: the lunr search index is generated only by `yarn build`. The search box in the dev server will return no results; use a production build to exercise search.
+Starts the Astro dev server with hot reload on http://localhost:4321/.
 
 ## Production build
 
 ```bash
-yarn build
+npm run build
 ```
 
-Emits static files to `docs/build/`. The build step also produces the lunr search index via `docusaurus-lunr-search`.
+Emits static files to `docs/dist/`.
 
 ## Preview the production build
 
 ```bash
-yarn run serve
+npm run preview
 ```
 
-Serves the contents of `docs/build/` locally so you can verify the production output, including search.
+Serves the contents of `docs/dist/` locally so you can verify the production output.
 
-## Deployment
+## Unit tests
 
-The site deploys automatically via [GitHub Pages](https://pages.github.com/) whenever changes land on the `main` branch. Configuration lives in [`.github/workflows/deploy-docs.yml`](../.github/workflows/deploy-docs.yml).
+```bash
+npm test
+```
 
-Pull requests trigger a build-only job (no deploy) so CI catches broken links before merge.
+Runs the Vitest suite (currently: the `remark-base-links` plugin tests).
+
+## Link checking
+
+```bash
+bash ../scripts/check-links.sh
+```
+
+To test with the production base path: `BASE=/longhorn-backup-pack/ bash ../scripts/check-links.sh`
+
+## Content
+
+Pages live in `src/content/docs/`. Each `.md` or `.mdx` file becomes a page. The sidebar is configured in `astro.config.mjs` under `starlight.sidebar`.
+
+## CI
+
+The [`Docs` workflow](../.github/workflows/docs.yml) runs unit tests, builds the site, checks internal links, and deploys to [Cloudflare Pages](https://pages.cloudflare.com) on every push to `main` and every pull request that touches `docs/`. Pull requests get a preview URL posted as a comment; the [`Docs preview cleanup`](../.github/workflows/docs-preview-cleanup.yml) workflow removes it when the PR closes.
